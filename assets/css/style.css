@@ -1,0 +1,125 @@
+/* ==========================================
+   OurMarketplace - Custom Styles
+   ========================================== */
+
+:root {
+    --primary: #4f46e5;
+    --primary-light: #6366f1;
+    --secondary: #f59e0b;
+    --dark: #1e293b;
+    --light-bg: #f8fafc;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.4rem;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 4rem 0;
+    border-radius: 0 0 1rem 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 0.75rem;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.card-img-top {
+    border-radius: 0.75rem 0.75rem 0 0;
+    height: 200px;
+    object-fit: cover;
+    background-color: #e2e8f0;
+}
+
+/* Star Rating */
+.stars {
+    color: var(--secondary);
+}
+
+.stars .empty {
+    color: #d1d5db;
+}
+
+/* Company Cards */
+.company-card {
+    border-left: 4px solid var(--primary);
+}
+
+/* Badges */
+.badge-category {
+    background-color: var(--primary-light);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 1rem;
+}
+
+/* Review Form */
+.rating-input {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 0.25rem;
+}
+
+.rating-input input {
+    display: none;
+}
+
+.rating-input label {
+    font-size: 1.5rem;
+    color: #d1d5db;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.rating-input label:hover,
+.rating-input label:hover ~ label,
+.rating-input input:checked ~ label {
+    color: var(--secondary);
+}
+
+/* Search */
+.search-box {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Top 5 List */
+.rank-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0;
+    }
+}
