@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/session.php';
 ?>
 <!DOCTYPE html>
@@ -9,12 +10,12 @@ require_once __DIR__ . '/session.php';
     <title><?php echo $pageTitle ?? 'OurMarketplace'; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="<?php echo baseUrl('/assets/css/style.css'); ?>" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="/index.php">
+        <a class="navbar-brand fw-bold" href="<?php echo baseUrl('/index.php'); ?>">
             <i class="fas fa-store"></i> OurMarketplace
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -23,22 +24,22 @@ require_once __DIR__ . '/session.php';
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/companies/index.php">Companies</a>
+                    <a class="nav-link" href="<?php echo baseUrl('/companies/index.php'); ?>">Companies</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/products/index.php">All Products</a>
+                    <a class="nav-link" href="<?php echo baseUrl('/products/index.php'); ?>">All Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/rankings/marketplace_top5.php">Top 5</a>
+                    <a class="nav-link" href="<?php echo baseUrl('/rankings/marketplace_top5.php'); ?>">Top 5</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/products/search.php">Search</a>
+                    <a class="nav-link" href="<?php echo baseUrl('/products/search.php'); ?>">Search</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <?php if (isLoggedIn()): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/tracking/history.php">
+                        <a class="nav-link" href="<?php echo baseUrl('/tracking/history.php'); ?>">
                             <i class="fas fa-history"></i> My Visits
                         </a>
                     </li>
@@ -47,17 +48,17 @@ require_once __DIR__ . '/session.php';
                             <i class="fas fa-user"></i> <?php echo htmlspecialchars(getCurrentFullName()); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/dashboard.php">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="<?php echo baseUrl('/dashboard.php'); ?>">Dashboard</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/auth/logout.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="<?php echo baseUrl('/auth/logout.php'); ?>">Logout</a></li>
                         </ul>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/auth/login.php">Login</a>
+                        <a class="nav-link" href="<?php echo baseUrl('/auth/login.php'); ?>">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="/auth/register.php">Register</a>
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="<?php echo baseUrl('/auth/register.php'); ?>">Register</a>
                     </li>
                 <?php endif; ?>
             </ul>

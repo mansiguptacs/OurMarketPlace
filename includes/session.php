@@ -21,7 +21,7 @@ function getCurrentFullName() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header("Location: /auth/login.php");
+        header("Location: " . baseUrl('/auth/login.php'));
         exit;
     }
 }

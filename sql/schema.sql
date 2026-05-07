@@ -3,8 +3,7 @@
 -- Cross Domain Enterprise Online Market Place
 -- ============================================
 
-CREATE DATABASE IF NOT EXISTS ourmarketplace;
-USE ourmarketplace;
+
 
 -- ============================================
 -- USERS TABLE (marketplace-wide single login)
@@ -82,10 +81,10 @@ CREATE TABLE user_visits (
 -- SEED DATA: Insert the 4 companies
 -- ============================================
 INSERT INTO companies (name, slug, description, owner_name, website_url, category) VALUES
-('KG Makeup Studio', 'kg-makeup-studio', 'Professional makeup services and beauty products for all occasions.', 'Mansi Gupta', 'https://mansiguptacs.com/kgmakeupstudio/', 'Makeup & Beauty'),
-('Megha Artisans', 'megha-artisans', 'Handcrafted artificial jewellery blending tradition with modern elegance.', 'Megha', 'https://mgcodes.com/', 'Artificial Jewellery'),
-('Cookie Business', 'cookie-business', 'Freshly baked cookies and treats made with love and premium ingredients.', 'Yukta Padgaonkar', 'http://yukta-padgaonkar.com/CMPE-272-project/cookie-business/', 'Cookies & Bakery'),
-('GeekyHub', 'geekyhub', 'IT consulting and staffing services connecting top tech talent with businesses.', 'Gayathri', 'https://geekyhub.me/', 'IT & Staffing Services');
+('Komal Gupta Makeup Studio', 'kg-makeup-studio', 'Professional makeup services and beauty products for all occasions.', 'Mansi Gupta', 'https://mansiguptacs.com/kgmakeupstudio/', 'Makeup & Beauty'),
+('Artisan Jewelry by Megha', 'megha-artisans', 'Handcrafted artificial jewellery blending tradition with modern elegance.', 'Megha Gangal', 'https://mgcodes.com/', 'Artificial Jewellery'),
+('Sweet Crumb Homemade Cookies', 'cookie-business', 'Freshly baked cookies and treats made with love and premium ingredients.', 'Yukta Padgaonkar', 'http://yukta-padgaonkar.com/CMPE-272-project/cookie-business/', 'Cookies & Bakery'),
+('GeekyHub', 'geekyhub', 'IT consulting and staffing services connecting top tech talent with businesses.', 'Gayathri Rukmadhavan', 'https://geekyhub.me/', 'IT & Staffing Services');
 
 -- ============================================
 -- SEED DATA: Products for KG Makeup Studio

@@ -7,14 +7,13 @@ require_once __DIR__ . '/includes/header.php';
     <div class="container">
         <h1 class="display-4 fw-bold">Welcome to OurMarketplace</h1>
         <p class="lead mt-3">Your one-stop destination for Makeup, Jewellery, Cookies & IT Services</p>
-        <a href="/companies/index.php" class="btn btn-light btn-lg mt-3">Explore Companies</a>
+        <a href="<?php echo baseUrl('/companies/index.php'); ?>" class="btn btn-light btn-lg mt-3">Explore Companies</a>
     </div>
 </div>
 
 <h2 class="text-center mb-4">Our Companies</h2>
 <div class="row g-4">
     <?php
-    require_once __DIR__ . '/config/database.php';
     $conn = getDBConnection();
     $result = $conn->query("SELECT * FROM companies ORDER BY id");
 
@@ -30,7 +29,7 @@ require_once __DIR__ . '/includes/header.php';
                 <p class="card-text mt-2 text-muted small">
                     <?php echo htmlspecialchars(substr($company['description'], 0, 80)); ?>...
                 </p>
-                <a href="/companies/view.php?id=<?php echo $company['id']; ?>" class="btn btn-outline-primary btn-sm mt-2">
+                <a href="<?php echo baseUrl('/companies/view.php?id=' . $company['id']); ?>" class="btn btn-outline-primary btn-sm mt-2">
                     Visit Store
                 </a>
             </div>

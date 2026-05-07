@@ -9,10 +9,10 @@
             <div class="col-md-4">
                 <h5>Our Companies</h5>
                 <ul class="list-unstyled text-muted">
-                    <li><a href="/companies/view.php?id=1" class="text-muted text-decoration-none">KG Makeup Studio</a></li>
-                    <li><a href="/companies/view.php?id=2" class="text-muted text-decoration-none">Megha Artisans</a></li>
-                    <li><a href="/companies/view.php?id=3" class="text-muted text-decoration-none">Cookie Business</a></li>
-                    <li><a href="/companies/view.php?id=4" class="text-muted text-decoration-none">GeekyHub</a></li>
+                    <li><a href="<?php echo baseUrl('/companies/view.php?id=1'); ?>" class="text-muted text-decoration-none">KG Makeup Studio</a></li>
+                    <li><a href="<?php echo baseUrl('/companies/view.php?id=2'); ?>" class="text-muted text-decoration-none">Megha Artisans</a></li>
+                    <li><a href="<?php echo baseUrl('/companies/view.php?id=3'); ?>" class="text-muted text-decoration-none">Cookie Business</a></li>
+                    <li><a href="<?php echo baseUrl('/companies/view.php?id=4'); ?>" class="text-muted text-decoration-none">GeekyHub</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
@@ -26,6 +26,6 @@
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script src="<?php echo baseUrl('/assets/js/main.js'); ?>"></script>
 </body>
 </html>
