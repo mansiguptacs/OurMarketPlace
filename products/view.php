@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/tracking.php';
 
 $conn = getDBConnection();
 
@@ -33,6 +34,9 @@ if (!$product) {
 }
 
 $pageTitle = $product['name'] . " - OurMarketplace";
+
+// Track this visit
+trackVisit($product['company_id'], $product_id);
 
 // Fetch reviews for this product
 $stmt = $conn->prepare("

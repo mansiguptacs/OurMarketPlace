@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/tracking.php';
 
 $conn = getDBConnection();
 
@@ -24,6 +25,9 @@ if (!$company) {
 }
 
 $pageTitle = $company['name'] . " - OurMarketplace";
+
+// Track this visit
+trackVisit($company_id);
 
 // Fetch products for this company
 $stmt = $conn->prepare("
