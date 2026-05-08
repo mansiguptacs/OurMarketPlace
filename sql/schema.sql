@@ -84,7 +84,7 @@ INSERT INTO companies (name, slug, description, owner_name, website_url, categor
 ('Komal Gupta Makeup Studio', 'kg-makeup-studio', 'Professional makeup services and beauty products for all occasions.', 'Mansi Gupta', 'https://mansiguptacs.com/kgmakeupstudio/', 'Makeup & Beauty'),
 ('Artisan Jewelry by Megha', 'megha-artisans', 'Handcrafted artificial jewellery blending tradition with modern elegance.', 'Megha Gangal', 'https://mgcodes.com/', 'Artificial Jewellery'),
 ('Sweet Crumb Homemade Cookies', 'cookie-business', 'Freshly baked cookies and treats made with love and premium ingredients.', 'Yukta Padgaonkar', 'http://yukta-padgaonkar.com/CMPE-272-project/cookie-business/', 'Cookies & Bakery'),
-('GeekyHub', 'geekyhub', 'IT consulting and staffing services connecting top tech talent with businesses.', 'Gayathri Rukmadhavan', 'https://geekyhub.me/', 'IT & Staffing Services');
+('GeekyHub', 'geekyhub', 'IT consulting and staffing services connecting top tech talent with businesses.', 'Gayathri Rukmadhavan', 'http://geekyhub.me/', 'IT & Staffing Services');
 
 -- ============================================
 -- SEED DATA: Products for KG Makeup Studio
