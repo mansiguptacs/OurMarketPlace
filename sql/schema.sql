@@ -125,3 +125,88 @@ INSERT INTO products (company_id, name, description, price, image_url, category)
 (4, 'Cloud Consulting', 'AWS/Azure cloud migration and optimization consulting services.', 200.00, 'images/it_cloud.jpg', 'Consulting'),
 (4, 'IT Staffing - Contract', 'Connect with pre-vetted software engineers for contract roles.', 150.00, 'images/it_staffing.jpg', 'Staffing'),
 (4, 'QA & Testing Services', 'Comprehensive manual and automated testing for your applications.', 3000.00, 'images/it_qa.jpg', 'Testing');
+
+-- ============================================
+-- WISHLIST TABLE (bonus feature)
+-- ============================================
+CREATE TABLE wishlist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_wishlist (user_id, product_id)
+);
+
+-- ============================================
+-- SEED DATA: Sample users for demo
+-- ============================================
+INSERT INTO users (username, email, password_hash, full_name) VALUES
+('demo_user', 'demo@ourmarketplace.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Demo User'),
+('mansi', 'mansi@ourmarketplace.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Mansi Gupta'),
+('megha', 'megha@ourmarketplace.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Megha'),
+('yukta', 'yukta@ourmarketplace.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Yukta Padgaonkar'),
+('gayathri', 'gayathri@ourmarketplace.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Gayathri');
+
+-- Password for all seed users: "password"
+
+-- ============================================
+-- SEED DATA: Sample reviews for demo
+-- ============================================
+INSERT INTO reviews (user_id, product_id, rating, review_text) VALUES
+(1, 1, 5, 'Amazing bridal makeup! Made me look stunning on my wedding day.'),
+(1, 6, 4, 'Beautiful kundan set, great value for the price.'),
+(1, 11, 5, 'Best chocolate chip cookies I have ever tasted!'),
+(1, 16, 4, 'Professional web development team, delivered on time.'),
+(2, 2, 4, 'Great party makeup, lasted all night without any touch-ups.'),
+(2, 7, 5, 'These pearl earrings are absolutely gorgeous. Highly recommend!'),
+(2, 12, 5, 'Red velvet cookies are to die for. Ordering again!'),
+(2, 17, 5, 'Their mobile app development service is top-notch.'),
+(3, 3, 5, 'Love this lipstick collection! Colors are vibrant and long-lasting.'),
+(3, 8, 4, 'Stylish oxidized bracelet. Gets compliments everywhere I go.'),
+(3, 13, 4, 'Macarons were fresh and flavourful. Nice packaging too.'),
+(3, 18, 3, 'Good consulting but could be faster with responses.'),
+(4, 4, 4, 'Gorgeous eyeshadow palette. Pigmentation is excellent.'),
+(4, 9, 5, 'This emerald ring is my favorite piece of jewelry now!'),
+(4, 14, 5, 'Custom cookie cake was a hit at the birthday party!'),
+(4, 19, 4, 'Found great candidates through their staffing service.'),
+(5, 5, 5, 'Learned so much in the masterclass. Totally worth it!'),
+(5, 10, 4, 'Beautiful maang tikka for my engagement. Looked elegant.'),
+(5, 15, 4, 'Brownies were fudgy and delicious. Perfect sweetness.'),
+(5, 20, 5, 'QA team found bugs we never would have caught. Excellent service!');
+
+-- ============================================
+-- SEED DATA: Sample visits for demo
+-- ============================================
+INSERT INTO user_visits (user_id, company_id, product_id, page_url) VALUES
+(1, 1, 1, '/companies/view.php?id=1'),
+(1, 1, 2, '/products/view.php?id=2'),
+(1, 2, 6, '/products/view.php?id=6'),
+(1, 2, 7, '/products/view.php?id=7'),
+(1, 3, 11, '/products/view.php?id=11'),
+(1, 4, 16, '/products/view.php?id=16'),
+(2, 1, 2, '/products/view.php?id=2'),
+(2, 2, 7, '/products/view.php?id=7'),
+(2, 3, 12, '/products/view.php?id=12'),
+(2, 4, 17, '/products/view.php?id=17'),
+(3, 1, 3, '/products/view.php?id=3'),
+(3, 2, 8, '/products/view.php?id=8'),
+(3, 3, 13, '/products/view.php?id=13'),
+(3, 4, 18, '/products/view.php?id=18'),
+(4, 1, 4, '/products/view.php?id=4'),
+(4, 2, 9, '/products/view.php?id=9'),
+(4, 3, 14, '/products/view.php?id=14'),
+(4, 4, 19, '/products/view.php?id=19'),
+(5, 1, 5, '/products/view.php?id=5'),
+(5, 2, 10, '/products/view.php?id=10'),
+(5, 3, 15, '/products/view.php?id=15'),
+(5, 4, 20, '/products/view.php?id=20'),
+(1, 1, NULL, '/companies/view.php?id=1'),
+(1, 2, NULL, '/companies/view.php?id=2'),
+(1, 3, NULL, '/companies/view.php?id=3'),
+(1, 4, NULL, '/companies/view.php?id=4'),
+(2, 1, NULL, '/companies/view.php?id=1'),
+(2, 3, NULL, '/companies/view.php?id=3'),
+(3, 2, NULL, '/companies/view.php?id=2'),
+(3, 4, NULL, '/companies/view.php?id=4');
