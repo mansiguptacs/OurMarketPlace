@@ -43,12 +43,18 @@ require_once __DIR__ . '/session.php';
                             <i class="fas fa-history"></i> My Visits
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo baseUrl('/wishlist/index.php'); ?>">
+                            <i class="fas fa-heart"></i> Wishlist
+                        </a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i> <?php echo htmlspecialchars(getCurrentFullName()); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="<?php echo baseUrl('/dashboard.php'); ?>">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="<?php echo baseUrl('/wishlist/index.php'); ?>">My Wishlist</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="<?php echo baseUrl('/auth/logout.php'); ?>">Logout</a></li>
                         </ul>

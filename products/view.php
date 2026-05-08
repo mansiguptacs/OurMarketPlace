@@ -99,11 +99,18 @@ require_once __DIR__ . '/../includes/header.php';
 
         <p><?php echo htmlspecialchars($product['description']); ?></p>
 
-        <?php if (!empty($product['website_url'])): ?>
-        <a href="<?php echo htmlspecialchars($product['website_url']); ?>" target="_blank" class="btn btn-primary">
-            <i class="fas fa-external-link-alt"></i> Visit Official Store
-        </a>
-        <?php endif; ?>
+        <div class="d-flex gap-2 flex-wrap">
+            <?php if (!empty($product['website_url'])): ?>
+            <a href="<?php echo htmlspecialchars($product['website_url']); ?>" target="_blank" class="btn btn-primary">
+                <i class="fas fa-external-link-alt"></i> Visit Official Store
+            </a>
+            <?php endif; ?>
+            <?php if (isLoggedIn()): ?>
+            <a href="<?php echo baseUrl('/wishlist/add.php?product_id=' . $product_id); ?>" class="btn btn-outline-danger">
+                <i class="fas fa-heart"></i> Add to Wishlist
+            </a>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
