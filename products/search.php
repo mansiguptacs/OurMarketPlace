@@ -63,9 +63,13 @@ if (!empty($query)) {
         <?php while ($product = $results->fetch_assoc()): ?>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100">
-                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:160px;">
-                    <i class="fas fa-image fa-3x text-muted"></i>
-                </div>
+                <?php if (!empty($product['image_url']) && file_exists(__DIR__ . '/../' . $product['image_url'])): ?>
+                    <img src="<?php echo baseUrl('/' . $product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:160px;object-fit:cover;">
+                <?php else: ?>
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:160px;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                <?php endif; ?>
                 <div class="card-body">
                     <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
                     <p class="mb-1">
