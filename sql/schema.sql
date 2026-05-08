@@ -120,8 +120,13 @@ INSERT INTO products (company_id, name, description, price, image_url, category)
 -- SEED DATA: Products for GeekyHub
 -- ============================================
 INSERT INTO products (company_id, name, description, price, image_url, category) VALUES
-(4, 'Web Development Package', 'Full-stack web application development with modern frameworks.', 5000.00, 'images/it_webdev.jpg', 'Development'),
-(4, 'Mobile App Development', 'Native iOS and Android app development from concept to launch.', 8000.00, 'images/it_appdev.jpg', 'Development'),
-(4, 'Cloud Consulting', 'AWS/Azure cloud migration and optimization consulting services.', 200.00, 'images/it_cloud.jpg', 'Consulting'),
-(4, 'IT Staffing - Contract', 'Connect with pre-vetted software engineers for contract roles.', 150.00, 'images/it_staffing.jpg', 'Staffing'),
-(4, 'QA & Testing Services', 'Comprehensive manual and automated testing for your applications.', 3000.00, 'images/it_qa.jpg', 'Testing');
+(4, 'Frontend Development', 'Responsive UI development with modern design, accessibility, and performance optimization.', 1200.00, 'images/frontend.jpg', 'Development'),
+(4, 'Backend Development', 'Secure and scalable server-side development including APIs, authentication, and database integration.', 1800.00, 'images/backend.jpg', 'Development'),
+(4, 'Test Automation', 'Automated testing solutions including unit, integration, and regression testing to improve software quality.', 900.00, 'images/test_automation.jpg', 'QA'),
+(4, 'Infrastructure Setup', 'Server and environment setup including LAMP stack, deployment configuration, backups, and monitoring.', 1500.00, 'images/infrastructure.jpg', 'DevOps'),
+(4, 'CMS Setup', 'Installation and customization of CMS platforms like WordPress with themes, plugins, and content structuring.', 800.00, 'images/cms.jpg', 'Development'),
+(4, 'API Integration', 'Integration of third-party services such as payment gateways, email systems, and external APIs.', 1100.00, 'images/api_integration.jpg', 'Development'),
+(4, 'Database Design', 'Design of efficient database schemas with proper relationships, indexing, and data integrity constraints.', 1300.00, 'images/database.jpg', 'Development'),
+(4, 'Performance Optimization', 'Enhancing application speed through code optimization, caching, and database query improvements.', 1000.00, 'images/performance.jpg', 'Optimization'),
+(4, 'Security Hardening', 'Improving application security with input validation, secure authentication, and best practices.', 1400.00, 'images/security.jpg', 'Security'),
+(4, 'Maintenance & Support', 'Ongoing updates, bug fixes, monitoring, and support to ensure system reliability and performance.', 700.00, 'images/maintenance.jpg', 'Support');
