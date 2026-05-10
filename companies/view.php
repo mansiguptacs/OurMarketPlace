@@ -29,21 +29,56 @@ $pageTitle = $company['name'] . " - OurMarketplace";
 // Track this visit
 trackVisit($company_id);
 
-// Fetch products for this company
-$stmt = $conn->prepare("
-    SELECT p.*, 
-           COALESCE(AVG(r.rating), 0) AS avg_rating,
-           COUNT(r.id) AS review_count
-    FROM products p
-    LEFT JOIN reviews r ON r.product_id = p.id
-    WHERE p.company_id = ?
-    GROUP BY p.id
-    ORDER BY p.name
-");
-$stmt->bind_param("i", $company_id);
-$stmt->execute();
-$products = $stmt->get_result();
-$stmt->close();
+// Fetch products for this company.
+// For Artisan Jewelry by Megha, prefer the remote API catalog.
+$products = [];
+$productsSource = 'db';
+
+if ($company_id === 2 || stripos($company['name'], 'Artisan Jewelry by Megha') !== false) {
+    $apiUrl = "https://mgcodes.com/get_products.php";
+    $apiResponse = @file_get_contents($apiUrl);
+
+    if ($apiResponse !== false) {
+        $decoded = json_decode($apiResponse, true);
+        if (is_array($decoded)) {
+            foreach ($decoded as $item) {
+                $products[] = [
+                    'id' => 'api-' . (string)($item['id'] ?? ''),
+                    'name' => (string)($item['product_name'] ?? ''),
+                    'description' => (string)($item['description'] ?? ''),
+                    'price' => (float)($item['price'] ?? 0),
+                    'image_url' => (string)($item['image_url'] ?? ''),
+                    'avg_rating' => 0,
+                    'review_count' => 0,
+                    'is_api_product' => true
+                ];
+            }
+            $productsSource = 'api';
+        }
+    }
+}
+
+// Fallback to local DB products when API is not used or unavailable.
+if ($productsSource !== 'api') {
+    $stmt = $conn->prepare("
+        SELECT p.*, 
+               COALESCE(AVG(r.rating), 0) AS avg_rating,
+               COUNT(r.id) AS review_count
+        FROM products p
+        LEFT JOIN reviews r ON r.product_id = p.id
+        WHERE p.company_id = ?
+        GROUP BY p.id
+        ORDER BY p.name
+    ");
+    $stmt->bind_param("i", $company_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $row['is_api_product'] = false;
+        $products[] = $row;
+    }
+    $stmt->close();
+}
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
@@ -78,15 +113,16 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<h3 class="mb-3">Products & Services (<?php echo $products->num_rows; ?>)</h3>
+<h3 class="mb-3">Products & Services (<?php echo count($products); ?>)</h3>
 
 <div class="row g-4">
-    <?php if ($products->num_rows > 0): ?>
-        <?php while ($product = $products->fetch_assoc()): ?>
+    <?php if (count($products) > 0): ?>
+        <?php foreach ($products as $product): ?>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100">
-                <?php if (!empty($product['image_url']) && file_exists(__DIR__ . '/../' . $product['image_url'])): ?>
-                    <img src="<?php echo baseUrl('/' . $product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:180px;object-fit:cover;">
+                <?php if (!empty($product['image_url']) && (filter_var($product['image_url'], FILTER_VALIDATE_URL) || file_exists(__DIR__ . '/../' . $product['image_url']))): ?>
+                    <?php $imageSrc = filter_var($product['image_url'], FILTER_VALIDATE_URL) ? $product['image_url'] : baseUrl('/' . ltrim($product['image_url'], '/')); ?>
+                    <img src="<?php echo htmlspecialchars($imageSrc); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:180px;object-fit:cover;">
                 <?php else: ?>
                     <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:180px;">
                         <i class="fas fa-image fa-3x text-muted"></i>
@@ -116,13 +152,17 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
                 <div class="card-footer bg-white border-0">
-                    <a href="<?php echo baseUrl('/products/view.php?id=' . $product['id']); ?>" class="btn btn-outline-primary btn-sm w-100">
-                        View Details
-                    </a>
+                    <?php if (!empty($product['is_api_product'])): ?>
+                        <button class="btn btn-outline-secondary btn-sm w-100" disabled>API Product</button>
+                    <?php else: ?>
+                        <a href="<?php echo baseUrl('/products/view.php?id=' . $product['id']); ?>" class="btn btn-outline-primary btn-sm w-100">
+                            View Details
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     <?php else: ?>
         <div class="col-12">
             <div class="alert alert-info">No products found for this company.</div>
