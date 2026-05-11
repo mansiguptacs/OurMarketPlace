@@ -96,6 +96,52 @@ INSERT INTO products (company_id, name, description, price, image_url, category)
 (1, 'Eyeshadow Palette - Sunset', '12-shade eyeshadow palette with warm sunset tones.', 38.00, 'assets/img/makeup_eyeshadow.jpg', 'Products'),
 (1, 'Makeup Masterclass Workshop', '3-hour hands-on workshop to learn professional makeup techniques.', 150.00, 'assets/img/makeup_workshop.jpg', 'Services');
 
+INSERT INTO products (company_id, name, description, price, image_url, category) VALUES
+(1, 'Party Makeup', 'Party makeup service', 25.00, 'assets/img/services/party_makeup.jpg', 'Services'),
+(1, 'Bridal Makeup', 'Bridal makeup service', 150.00, 'assets/img/services/bridal_makeup.jpg', 'Services'),
+(1, 'Engagement Makeup', 'Engagement makeup service', 80.00, 'assets/img/services/engagement_makeup.jpg', 'Services'),
+
+(1, 'Eyebrow Threading', 'Eyebrow threading service', 0.50, 'assets/img/services/eyebrow_threading.jpg', 'Services'),
+(1, 'Upper Lip Threading', 'Upper lip threading service', 0.30, 'assets/img/services/upper_lip.jpg', 'Services'),
+
+(1, 'Basic Haircut', 'Basic haircut service', 3.00, 'assets/img/services/basic_haircut.jpg', 'Services'),
+(1, 'Layered Haircut', 'Layered haircut service', 6.00, 'assets/img/services/layered_haircut.jpg', 'Services'),
+(1, 'Step Cut', 'Step cut service', 5.00, 'assets/img/services/step_cut.jpg', 'Services'),
+
+(1, 'Hair Spa', 'Hair spa service', 12.00, 'assets/img/services/hair_spa.jpg', 'Services'),
+(1, 'Keratin Treatment', 'Keratin treatment service', 40.00, 'assets/img/services/keratin.jpg', 'Services'),
+(1, 'Hair Coloring (Global)', 'Hair coloring service', 30.00, 'assets/img/services/hair_coloring.jpg', 'Services'),
+
+(1, 'Clean Up', 'Skin clean up service', 5.00, 'assets/img/services/cleanup.jpg', 'Services'),
+(1, 'Fruit Facial', 'Fruit facial service', 8.00, 'assets/img/services/fruit_facial.jpg', 'Services'),
+(1, 'O3+ Facial', 'O3 facial service', 20.00, 'assets/img/services/o3_facial.jpg', 'Services'),
+(1, 'De-Tan Pack', 'De-tan service', 4.00, 'assets/img/services/detan.jpg', 'Services'),
+
+(1, 'Basic Manicure', 'Manicure service', 4.00, 'assets/img/services/manicure.jpg', 'Services'),
+(1, 'Basic Pedicure', 'Pedicure service', 5.00, 'assets/img/services/pedicure.jpg', 'Services'),
+(1, 'Nail Art (Per Finger)', 'Nail art service', 1.00, 'assets/img/services/nail_art.jpg', 'Services'),
+(1, 'Gel Nail Polish', 'Gel polish service', 8.00, 'assets/img/services/gel_polish.jpg', 'Services'),
+
+(1, 'Basic Mehndi', 'Mehndi service', 5.00, 'assets/img/services/basic_mehndi.jpg', 'Services'),
+(1, 'Bridal Mehndi', 'Bridal mehndi service', 50.00, 'assets/img/services/bridal_mehndi.jpg', 'Services'),
+
+(1, 'Pre-Bridal Package (Basic)', 'Basic pre-bridal service', 50.00, 'assets/img/services/prebridal_basic.jpg', 'Services'),
+(1, 'Pre-Bridal Package (Premium)', 'Premium pre-bridal service', 100.00, 'assets/img/services/prebridal_premium.jpg', 'Services'),
+
+(1, 'Saree Draping', 'Saree draping service', 3.00, 'assets/img/services/saree.jpg', 'Services'),
+(1, 'Waxing (Full Arms)', 'Full arms waxing', 2.50, 'assets/img/services/wax_arms.jpg', 'Services'),
+(1, 'Waxing (Full Legs)', 'Full legs waxing', 4.00, 'assets/img/services/wax_legs.jpg', 'Services');
+
+INSERT INTO products (company_id, name, description, price, image_url, category) VALUES
+(1, 'Vitamin C Face Wash', 'Face wash product', 3.50, 'assets/img/products/facewash.jpg', 'Products'),
+(1, 'Hydrating Moisturizer', 'Moisturizer product', 5.50, 'assets/img/products/moisturizer.jpg', 'Products'),
+(1, 'Sunscreen SPF 50', 'Sunscreen product', 4.50, 'assets/img/products/sunscreen.jpg', 'Products'),
+(1, 'Rose Water Toner', 'Toner product', 2.00, 'assets/img/products/toner.jpg', 'Products'),
+(1, 'Under Eye Cream', 'Eye cream product', 4.00, 'assets/img/products/eye_cream.jpg', 'Products'),
+
+(1, 'Base Coat Polish', 'Nail base coat', 2.50, 'assets/img/products/base_coat.jpg', 'Products'),
+(1, 'Top Coat Polish', 'Nail top coat', 2.50, 'assets/img/products/top_coat.jpg', 'Products'),
+(1, 'Nail Polish Remover', 'Nail remover product', 1.50, 'assets/img/products/remover.jpg', 'Products');
 -- ============================================
 -- SEED DATA: Products for Megha Artisans
 -- ============================================
