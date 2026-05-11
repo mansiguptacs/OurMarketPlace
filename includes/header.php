@@ -31,10 +31,13 @@ require_once __DIR__ . '/product_image.php';
                     <a class="nav-link" href="<?php echo baseUrl('/products/index.php'); ?>">All Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo baseUrl('/rankings/marketplace_top5.php'); ?>">Top 5</a>
+                    <a class="nav-link" href="<?php echo baseUrl('/rankings/marketplace_top5.php'); ?>">Top Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo baseUrl('/products/search.php'); ?>">Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo baseUrl('/team.php'); ?>">Team</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

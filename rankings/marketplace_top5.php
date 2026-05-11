@@ -71,6 +71,13 @@ $results = $conn->query($sql);
 <h2 class="mb-2">Top 5 Products - Marketplace</h2>
 <p class="text-muted mb-4">The best products across all companies in our marketplace.</p>
 
+<!-- Per-Company Rankings Link -->
+<div class="mt-4 text-center">
+    <a href="<?php echo baseUrl('/rankings/company_top5.php'); ?>" class="btn btn-outline-primary">
+        <i class="fas fa-building"></i>Click to view Top 5 Products/Services Per Company
+    </a>
+</div>
+
 <!-- Ranking Method Tabs -->
 <ul class="nav nav-pills mb-4">
     <li class="nav-item">
@@ -142,12 +149,7 @@ $results = $conn->query($sql);
 </div>
 <?php endif; ?>
 
-<!-- Per-Company Rankings Link -->
-<div class="mt-4 text-center">
-    <a href="<?php echo baseUrl('/rankings/company_top5.php'); ?>" class="btn btn-outline-primary">
-        <i class="fas fa-building"></i> View Top 5 Per Company
-    </a>
-</div>
+
 
 <?php
 $conn->close();

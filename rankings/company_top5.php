@@ -34,6 +34,13 @@ switch ($method) {
 <h2 class="mb-2">Top 5 Products Per Company</h2>
 <p class="text-muted mb-4">See the best products within each company.</p>
 
+<!-- Back to Marketplace Rankings -->
+<div class="text-center">
+    <a href="<?php echo baseUrl('/rankings/marketplace_top5.php'); ?>" class="btn btn-outline-primary">
+        <i class="fas fa-trophy"></i>Click to view Marketplace-wide Top 5 products/services
+    </a>
+</div>
+
 <!-- Ranking Method Tabs -->
 <ul class="nav nav-pills mb-4">
     <li class="nav-item">
@@ -125,12 +132,7 @@ switch ($method) {
 </div>
 <?php endwhile; ?>
 
-<!-- Back to Marketplace Rankings -->
-<div class="text-center">
-    <a href="<?php echo baseUrl('/rankings/marketplace_top5.php'); ?>" class="btn btn-outline-primary">
-        <i class="fas fa-trophy"></i> View Marketplace-wide Top 5
-    </a>
-</div>
+
 
 <?php
 $conn->close();
