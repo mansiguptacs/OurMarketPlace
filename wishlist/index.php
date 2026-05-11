@@ -10,14 +10,19 @@ $user_id = getCurrentUserId();
 
 $stmt = $conn->prepare("
     SELECT w.added_at, p.*, c.name AS company_name, c.id AS company_id,
-           COALESCE(AVG(r.rating), 0) AS avg_rating,
-           COUNT(DISTINCT r.id) AS review_count
+           COALESCE(pr.avg_rating, 0) AS avg_rating,
+           COALESCE(pr.review_count, 0) AS review_count
     FROM wishlist w
     JOIN products p ON p.id = w.product_id
     JOIN companies c ON c.id = p.company_id
-    LEFT JOIN reviews r ON r.product_id = p.id
+    LEFT JOIN (
+        SELECT product_id,
+               AVG(rating) AS avg_rating,
+               COUNT(*) AS review_count
+        FROM reviews
+        GROUP BY product_id
+    ) pr ON pr.product_id = p.id
     WHERE w.user_id = ?
-    GROUP BY p.id
     ORDER BY w.added_at DESC
 ");
 $stmt->bind_param("i", $user_id);
@@ -37,8 +42,11 @@ require_once __DIR__ . '/../includes/header.php';
     <?php while ($product = $items->fetch_assoc()): ?>
     <div class="col-md-6 col-lg-4">
         <div class="card h-100">
-            <?php if (!empty($product['image_url']) && file_exists(__DIR__ . '/../' . $product['image_url'])): ?>
-                <img src="<?php echo baseUrl('/' . $product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:160px;object-fit:cover;">
+            <?php
+            [$showProductImg, $productImgSrc] = productImageForDisplay($product['image_url'] ?? '');
+            ?>
+            <?php if ($showProductImg): ?>
+                <img src="<?php echo htmlspecialchars($productImgSrc); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:160px;object-fit:cover;">
             <?php else: ?>
                 <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:160px;">
                     <i class="fas fa-image fa-3x text-muted"></i>

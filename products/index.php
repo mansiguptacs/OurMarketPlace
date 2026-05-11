@@ -48,8 +48,11 @@ $companies = $conn->query("SELECT id, name FROM companies ORDER BY name");
         <?php while ($product = $products->fetch_assoc()): ?>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100">
-                <?php if (!empty($product['image_url']) && file_exists(__DIR__ . '/../' . $product['image_url'])): ?>
-                    <img src="<?php echo baseUrl('/' . $product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:180px;object-fit:cover;">
+                <?php
+                [$showProductImg, $productImgSrc] = productImageForDisplay($product['image_url'] ?? '');
+                ?>
+                <?php if ($showProductImg): ?>
+                    <img src="<?php echo htmlspecialchars($productImgSrc); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:180px;object-fit:cover;">
                 <?php else: ?>
                     <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:180px;">
                         <i class="fas fa-image fa-3x text-muted"></i>
