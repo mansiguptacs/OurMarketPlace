@@ -66,8 +66,11 @@ require_once __DIR__ . '/../includes/header.php';
     <!-- Product Info -->
     <div class="col-md-5">
         <div class="card">
-            <?php if (!empty($product['image_url']) && file_exists(__DIR__ . '/../' . $product['image_url'])): ?>
-                <img src="<?php echo baseUrl('/' . $product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:300px;object-fit:cover;">
+            <?php
+            [$showProductImg, $productImgSrc] = productImageForDisplay($product['image_url'] ?? '');
+            ?>
+            <?php if ($showProductImg): ?>
+                <img src="<?php echo htmlspecialchars($productImgSrc); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:300px;object-fit:cover;">
             <?php else: ?>
                 <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:300px;">
                     <i class="fas fa-image fa-5x text-muted"></i>
