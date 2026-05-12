@@ -194,6 +194,32 @@ CREATE TABLE user_tokens (
 );
 
 -- ============================================
+-- SSO APPS TABLE (registered client applications)
+-- ============================================
+CREATE TABLE sso_apps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    app_id VARCHAR(50) UNIQUE NOT NULL,
+    app_name VARCHAR(100) NOT NULL,
+    app_secret VARCHAR(64) NOT NULL,
+    redirect_url VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- SSO AUTH CODES TABLE (short-lived one-time codes)
+-- ============================================
+CREATE TABLE sso_auth_codes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(64) UNIQUE NOT NULL,
+    user_id INT NOT NULL,
+    app_id VARCHAR(50) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    used TINYINT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- ============================================
 -- WISHLIST TABLE (bonus feature)
 -- ============================================
 CREATE TABLE wishlist (
@@ -277,3 +303,12 @@ INSERT INTO user_visits (user_id, company_id, product_id, page_url) VALUES
 (2, 3, NULL, '/companies/view.php?id=3'),
 (3, 2, NULL, '/companies/view.php?id=2'),
 (3, 4, NULL, '/companies/view.php?id=4');
+
+-- ============================================
+-- SEED DATA: SSO client apps for the 4 companies
+-- ============================================
+INSERT INTO sso_apps (app_id, app_name, app_secret, redirect_url) VALUES
+('kg-makeup-studio', 'Komal Gupta Makeup Studio', 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2', 'https://mansiguptacs.com/kgmakeupstudio/sso/callback.php'),
+('megha-artisans', 'Artisan Jewelry by Megha', 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3', 'https://mgcodes.com/sso/callback.php'),
+('cookie-business', 'Sweet Crumb Homemade Cookies', 'c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4', 'http://yukta-padgaonkar.com/CMPE-272-project/cookie-business/sso/callback.php'),
+('geekyhub', 'GeekyHub', 'd4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5', 'http://geekyhub.me/sso/callback.php');

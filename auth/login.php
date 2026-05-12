@@ -3,9 +3,15 @@ $pageTitle = "Login - OurMarketplace";
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/session.php';
 
+$return_to = $_GET['return_to'] ?? '';
+
 // Redirect if already logged in
 if (isLoggedIn()) {
-    header("Location: " . baseUrl('/index.php'));
+    if (!empty($return_to) && strpos($return_to, baseUrl('/sso/')) === 0) {
+        header("Location: " . $return_to);
+    } else {
+        header("Location: " . baseUrl('/index.php'));
+    }
     exit;
 }
 
@@ -31,7 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username']  = $user['username'];
                 $_SESSION['full_name'] = $user['full_name'];
 
-                header("Location: " . baseUrl('/index.php'));
+                $return_to = $_GET['return_to'] ?? $_POST['return_to'] ?? '';
+                if (!empty($return_to) && strpos($return_to, baseUrl('/sso/')) === 0) {
+                    header("Location: " . $return_to);
+                } else {
+                    header("Location: " . baseUrl('/index.php'));
+                }
                 exit;
             } else {
                 $errors[] = "Invalid username or password.";
@@ -64,6 +75,9 @@ require_once __DIR__ . '/../includes/header.php';
             <?php endif; ?>
 
             <form method="POST" action="">
+                <?php if (!empty($_GET['return_to'])): ?>
+                    <input type="hidden" name="return_to" value="<?php echo htmlspecialchars($_GET['return_to']); ?>">
+                <?php endif; ?>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username or Email</label>
                     <input type="text" class="form-control" id="username" name="username"
