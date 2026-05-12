@@ -1,0 +1,4 @@
+# Pass Authorization through to PHP (fixes missing HTTP_AUTHORIZATION on some Apache/LiteSpeed + PHP-FPM setups).
+<IfModule mod_setenvif.c>
+SetEnvIf Authorization "(.+)" HTTP_AUTHORIZATION=$1
+</IfModule>

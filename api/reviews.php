@@ -4,13 +4,14 @@
  *
  * GET  ?product_id= — list reviews for a product (unchanged).
  * POST — create or update the caller's review for one product (one review per user per product).
- *        Auth: Authorization: Bearer <token> where token is from POST /api/login.php or POST /sso/token.php
- *        Body (JSON): { "product_id": int, "rating": 1-5, "review_text": string (optional) }
+ *        Auth (any one): Authorization: Bearer <token>, header X-Marketplace-Token: <token>, or JSON access_token
+ *        (some hosts strip Authorization on POST; use X-Marketplace-Token or access_token from the client).
+ *        Body (JSON): { "product_id": int, "rating": 1-5, "review_text": string (optional), "access_token": string (optional) }
  */
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Marketplace-Token');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
@@ -18,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/api_token.php';
 
 $method = $_SERVER['REQUEST_METHOD'] ?? '';
 
@@ -75,27 +77,23 @@ if ($method === 'GET') {
 }
 
 if ($method === 'POST') {
-    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
-    if (!preg_match('/^Bearer\s+(.+)$/i', $authHeader, $matches)) {
-        http_response_code(401);
-        echo json_encode([
-            'error' => 'Missing or invalid Authorization header. Use: Authorization: Bearer <token>',
-            'hint' => 'Obtain a token via POST /api/login.php with username/password, or via SSO POST /sso/token.php after authorization.',
-        ]);
-        exit;
+    $rawBody = file_get_contents('php://input');
+    $input = json_decode($rawBody, true);
+    if (!is_array($input)) {
+        $input = [];
     }
 
-    $token = trim($matches[1]);
+    $token = om_api_read_bearer_token();
+    if ($token === '' && !empty($input['access_token'])) {
+        $token = trim((string) $input['access_token']);
+    }
+
     if ($token === '') {
         http_response_code(401);
-        echo json_encode(['error' => 'Empty bearer token.']);
-        exit;
-    }
-
-    $input = json_decode(file_get_contents('php://input'), true);
-    if (!is_array($input)) {
-        http_response_code(422);
-        echo json_encode(['error' => 'JSON body required with product_id and rating.']);
+        echo json_encode([
+            'error' => 'Missing token. Use Authorization: Bearer <token>, header X-Marketplace-Token, or JSON field access_token.',
+            'hint' => 'Some hosts strip Authorization on POST; send access_token in the JSON body from your client.',
+        ]);
         exit;
     }
 
@@ -149,7 +147,13 @@ if ($method === 'POST') {
         ON DUPLICATE KEY UPDATE rating = VALUES(rating), review_text = VALUES(review_text), created_at = CURRENT_TIMESTAMP
     ");
     $stmt->bind_param("iiis", $user_id, $product_id, $rating, $review_text);
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        $stmt->close();
+        $conn->close();
+        http_response_code(500);
+        echo json_encode(['error' => 'Could not save review. Check server logs or database constraints.']);
+        exit;
+    }
     $insert_id = (int) $conn->insert_id;
     $stmt->close();
 

@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Marketplace-Token');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
@@ -16,14 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/api_token.php';
 
-// Accept token from Authorization header or query parameter
-$token = '';
-
-$authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
-if (preg_match('/^Bearer\s+(.+)$/i', $authHeader, $matches)) {
-    $token = $matches[1];
-}
+// Accept token from Authorization, X-Marketplace-Token, or ?token=
+$token = om_api_read_bearer_token();
 
 if (empty($token)) {
     $token = trim($_GET['token'] ?? '');
