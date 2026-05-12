@@ -142,6 +142,8 @@ INSERT INTO products (company_id, name, description, price, image_url, category)
 (1, 'Base Coat Polish', 'Nail base coat', 2.50, 'assets/img/base_coat_polish.jpg', 'Products'),
 (1, 'Top Coat Polish', 'Nail top coat', 2.50, 'assets/img/top_coat_polish.jpg', 'Products'),
 (1, 'Nail Polish Remover', 'Nail remover product', 1.50, 'assets/img/nail_polish_remover.jpg', 'Products');
+
+
 -- ============================================
 -- SEED DATA: Products for Megha Artisans
 -- ============================================
@@ -178,6 +180,18 @@ INSERT INTO products (company_id, name, description, price, image_url, category)
 (4, 'Maintenance & Support', 'Ongoing updates, bug fixes, monitoring, and support to ensure system reliability and performance.', 700.00, 'assets/img/maintenance.svg', 'Support');
 
 
+
+-- ============================================
+-- API TOKENS TABLE (cross-site authentication)
+-- ============================================
+CREATE TABLE user_tokens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(64) UNIQUE NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
 
 -- ============================================
 -- WISHLIST TABLE (bonus feature)
