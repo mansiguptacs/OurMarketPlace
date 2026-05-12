@@ -3,14 +3,14 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/tracking.php';
 
-$conn = getDBConnection();
-
 // Get company ID from URL
 $company_id = intval($_GET['id'] ?? 0);
 if ($company_id <= 0) {
     header("Location: " . baseUrl('/companies/index.php'));
     exit;
 }
+
+$conn = getDBConnection();
 
 // Fetch company details
 $stmt = $conn->prepare("SELECT * FROM companies WHERE id = ?");
