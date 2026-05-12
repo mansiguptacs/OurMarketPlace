@@ -3,6 +3,8 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/session.php';
 
 requireLogin();
+invalidateStaleSessionUser();
+requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: " . baseUrl('/products/index.php'));
@@ -12,10 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $product_id  = intval($_POST['product_id'] ?? 0);
 $rating      = intval($_POST['rating'] ?? 0);
 $review_text = trim($_POST['review_text'] ?? '');
-$user_id     = getCurrentUserId();
+$user_id = (int) getCurrentUserId();
 
 // Validation
-if ($product_id <= 0 || $rating < 1 || $rating > 5) {
+if ($user_id <= 0 || $product_id <= 0 || $rating < 1 || $rating > 5) {
     header("Location: " . baseUrl('/products/index.php'));
     exit;
 }
