@@ -1,0 +1,32 @@
+<?php
+/**
+ * Local XAMPP template — copy to database.php (same folder).
+ * Adjust BASE_URL to match the URL path in your browser (case-sensitive on some servers).
+ *
+ * Example if the repo lives at:
+ *   C:\xampp\htdocs\CMPE-272-project\ourMarketplace\
+ * open:
+ *   http://localhost/CMPE-272-project/ourMarketplace/index.php
+ * then BASE_URL must be:
+ *   '/CMPE-272-project/ourMarketplace'
+ */
+define('DB_HOST', '127.0.0.1');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_NAME', 'ourmarketplace');
+define('DB_PORT', '3306');
+
+define('BASE_URL', '/CMPE-272-project/ourMarketplace');
+
+function getDBConnection() {
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, (int) DB_PORT);
+    if ($conn->connect_error) {
+        die('Database connection failed: ' . $conn->connect_error);
+    }
+    $conn->set_charset('utf8mb4');
+    return $conn;
+}
+
+function baseUrl($path = '') {
+    return BASE_URL . $path;
+}
