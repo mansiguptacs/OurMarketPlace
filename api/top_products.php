@@ -42,6 +42,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 require_once __DIR__ . '/../config/database.php';
 
+function om_api_image_url(string $imageUrl): string
+{
+    $imageUrl = trim($imageUrl);
+    if ($imageUrl === '') {
+        return '';
+    }
+    if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+        return $imageUrl;
+    }
+    return 'https://mansiguptacs.com/ourmarketplace/' . ltrim($imageUrl, '/');
+}
+
 $company_id = isset($_GET['company_id']) ? (int)$_GET['company_id'] : 0;
 $method     = isset($_GET['method']) ? trim((string)$_GET['method']) : 'best_rated';
 $limit      = isset($_GET['limit']) ? (int)$_GET['limit'] : 5;
@@ -115,9 +127,7 @@ while ($row = $result->fetch_assoc()) {
     $row['avg_rating']   = round((float)$row['avg_rating'], 1);
     $row['review_count'] = (int)$row['review_count'];
     $row['visit_count']  = (int)$row['visit_count'];
-    if (!empty($row['image_url'])) {
-        $row['image_url'] = 'https://mansiguptacs.com/ourmarketplace/' . ltrim($row['image_url'], '/');
-    }
+    $row['image_url'] = om_api_image_url((string) ($row['image_url'] ?? ''));
     $products[] = $row;
 }
 $stmt->close();

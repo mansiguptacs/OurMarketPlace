@@ -83,7 +83,7 @@ CREATE TABLE user_visits (
 INSERT INTO companies (name, slug, description, owner_name, website_url, category) VALUES
 ('Komal Gupta Makeup Studio', 'kg-makeup-studio', 'Professional makeup services and beauty products for all occasions.', 'Mansi Gupta', 'https://mansiguptacs.com/kgmakeupstudio/', 'Makeup & Beauty'),
 ('Artisan Jewelry by Megha', 'megha-artisans', 'Handcrafted artificial jewellery blending tradition with modern elegance.', 'Megha Gangal', 'https://mgcodes.com/', 'Artificial Jewellery'),
-('Sweet Crumb Homemade Cookies', 'cookie-business', 'Freshly baked cookies and treats made with love and premium ingredients.', 'Yukta Padgaonkar', 'http://yukta-padgaonkar.com/CMPE-272-project/cookie-business/', 'Cookies & Bakery'),
+('Sweet Crumb Homemade Cookies', 'cookie-business', 'Freshly baked cookies and treats made with love and premium ingredients.', 'Yukta Padgaonkar', 'https://www.yukta-padgaonkar.com/CMPE-272-project/cookie-business/', 'Cookies & Bakery'),
 ('GeekyHub', 'geekyhub', 'IT consulting and staffing services connecting top tech talent with businesses.', 'Gayathri Rukmadhavan', 'http://geekyhub.me/', 'IT & Staffing Services');
 
 -- ============================================
@@ -164,11 +164,16 @@ INSERT INTO products (company_id, name, description, price, image_url, category)
 -- SEED DATA: Products for Cookie Business
 -- ============================================
 INSERT INTO products (company_id, name, description, price, image_url, category) VALUES
-(3, 'Classic Chocolate Chip Cookies', 'Freshly baked chocolate chip cookies with premium Belgian chocolate.', 12.99, 'assets/img/cookie_chocchip.jpg', 'Cookies'),
-(3, 'Red Velvet Cookie Box', 'Box of 12 soft red velvet cookies with cream cheese filling.', 18.99, 'assets/img/cookie_redvelvet.jpg', 'Cookies'),
-(3, 'Assorted Macaron Set', 'Set of 12 French macarons in assorted flavors.', 24.99, 'assets/img/cookie_macaron.jpg', 'Macarons'),
-(3, 'Custom Birthday Cookie Cake', 'Personalized giant cookie cake for birthdays and celebrations.', 35.00, 'assets/img/cookie_cake.jpg', 'Custom Orders'),
-(3, 'Brownie Bliss Box', '6 fudgy brownies with walnut and caramel swirl.', 15.99, 'assets/img/cookie_brownie.jpg', 'Brownies');
+(3, 'Classic Chocolate Chip', 'Our signature cookie: real butter, brown sugar, and premium semisweet chocolate chips. Baked until the edges are golden and the center stays soft. Perfect with milk or coffee. Available by the dozen or half-dozen.', 14.99, 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&q=80', 'Cookies'),
+(3, 'Oatmeal Raisin Deluxe', 'Old-fashioned rolled oats, California raisins, and a hint of cinnamon and vanilla. Chewy, filling, and not too sweet-great for breakfast or an afternoon snack.', 13.99, 'https://images.unsplash.com/photo-1590080876410-2c2a8e7b3c5f?w=800&q=80', 'Cookies'),
+(3, 'Decorated Sugar Cookies', 'Soft cut-out sugar cookies with royal icing in your choice of colors and simple designs. Ideal for birthdays, holidays, and corporate gifts. Minimum order applies.', 29.99, 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&q=80', 'Cookies'),
+(3, 'Snickerdoodle', 'Cream of tartar gives these their classic tang; the outside is rolled in cinnamon sugar for a crisp, spicy shell and a tender middle.', 12.49, 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&q=80', 'Cookies'),
+(3, 'Double Chocolate Fudge', 'For chocolate lovers: rich cocoa batter folded with dark chocolate chunks. Dense, fudgy, and intense. Pairs well with espresso.', 15.49, 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&q=80', 'Cookies'),
+(3, 'Lemon Glazed Shortbread', 'Crisp shortbread base with fresh lemon zest in the dough and a thin tangy glaze on top. Light and refreshing for spring and summer events.', 13.49, 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=800&q=80', 'Cookies'),
+(3, 'Peanut Butter Blossom', 'Classic peanut butter cookies rolled in sugar, baked, and topped with a milk chocolate center. Nostalgic and crowd-pleasing.', 14.49, 'https://images.unsplash.com/photo-1599735219378-2b5c8a3b6c5f?w=800&q=80', 'Cookies'),
+(3, 'Custom Catering Tray', 'Large platters with a mix of our bestsellers (minimum 48 pieces). We label allergens on request and deliver within our service area. Perfect for office meetings and celebrations.', 89.99, 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&q=80', 'Catering'),
+(3, 'Gift Box Subscription', 'Subscribe for a monthly box of seasonal flavors plus a rotating baker''s choice. Skip or cancel anytime. Great gift for students and remote teams.', 34.99, 'https://images.unsplash.com/photo-1548365328-9c3a75d7f2f0?w=800&q=80', 'Subscriptions'),
+(3, 'Gluten-Friendly Almond Cookie', 'Chewy cookies made with almond flour and dark chocolate. Not certified gluten-free (shared kitchen) but no wheat flour in the recipe. Ask for ingredient list.', 17.49, 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&q=80', 'Cookies');
 
 -- ============================================
 -- SEED DATA: Products for GeekyHub
@@ -316,5 +321,5 @@ INSERT INTO user_visits (user_id, company_id, product_id, page_url) VALUES
 INSERT INTO sso_apps (app_id, app_name, app_secret, redirect_url) VALUES
 ('kg-makeup-studio', 'Komal Gupta Makeup Studio', 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2', 'https://mansiguptacs.com/kgmakeupstudio/sso/callback.php'),
 ('megha-artisans', 'Artisan Jewelry by Megha', 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3', 'https://mgcodes.com/sso/callback.php'),
-('cookie-business', 'Sweet Crumb Homemade Cookies', 'c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4', 'http://yukta-padgaonkar.com/CMPE-272-project/cookie-business/sso/callback.php'),
+('cookie-business', 'Sweet Crumb Homemade Cookies', 'c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4', 'https://www.yukta-padgaonkar.com/CMPE-272-project/cookie-business/sso/callback.php'),
 ('geekyhub', 'GeekyHub', 'd4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5', 'http://geekyhub.me/sso/callback.php');

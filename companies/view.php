@@ -3,6 +3,7 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/tracking.php';
 require_once __DIR__ . '/../includes/remote_catalog.php';
+require_once __DIR__ . '/../includes/sso_token.php';
 
 // Get company ID from URL
 $company_id = intval($_GET['id'] ?? 0);
@@ -30,7 +31,7 @@ $pageTitle = $company['name'] . " - OurMarketplace";
 // Track this visit
 trackVisit($company_id);
 
-// Prefer partner JSON when available (same contract as get_products.php); else local DB for real ids + reviews.
+// Prefer partner JSON when available; otherwise use the marketplace DB for real ids + reviews.
 $products = [];
 $productsSource = 'db';
 
@@ -41,15 +42,6 @@ $partnerIdPrefix = 'api';
 if ($company_id === 2 || ($company['slug'] ?? '') === 'megha-artisans') {
     $partnerApiUrl = 'https://mgcodes.com/get_products.php';
     $partnerIdPrefix = 'megha';
-}
-
-// Sweet Crumb / cookie-business (company_id 3): URL from company row + /get_products.php
-if ($company_id === 3 || ($company['slug'] ?? '') === 'cookie-business') {
-    $base = rtrim((string) ($company['website_url'] ?? ''), '/');
-    if ($base !== '') {
-        $partnerApiUrl = $base . '/get_products.php';
-        $partnerIdPrefix = 'cookie';
-    }
 }
 
 if ($partnerApiUrl !== null) {
@@ -105,9 +97,18 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
             <div class="col-md-4 text-md-end">
                 <?php if (!empty($company['website_url'])): ?>
-                <a href="<?php echo htmlspecialchars($company['website_url']); ?>" target="_blank" class="btn btn-outline-primary">
-                    <i class="fas fa-external-link-alt"></i> Visit Official Website
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end flex-md-column flex-lg-row align-items-md-end">
+                <?php if (isLoggedIn() && (($company['slug'] ?? '') === 'cookie-business' || marketplace_sso_launch_ready())): ?>
+                <a href="<?php echo htmlspecialchars(baseUrl('/sso/launch_to_company.php?company_id=' . (int) $company_id . '&return=index.php')); ?>" class="btn btn-success order-md-first" title="Starts single sign-on with the partner site">
+                    <i class="fas fa-key"></i> Open company site (signed in)
                 </a>
+                <?php elseif (isLoggedIn()): ?>
+                <p class="small text-muted mb-0 text-md-end" style="max-width:14rem;">SSO is off: add <code>config/sso_config.php</code> on the marketplace and <code>includes/sso_config.php</code> on the partner site with the same <code>MARKETPLACE_SSO_SECRET</code>.</p>
+                <?php endif; ?>
+                <a href="<?php echo htmlspecialchars($company['website_url']); ?>" target="_blank" rel="noopener" class="btn btn-outline-primary" title="New tab — does not pass marketplace login">
+                    <i class="fas fa-external-link-alt"></i> Official website (no login transfer)
+                </a>
+                </div>
                 <?php endif; ?>
             </div>
         </div>

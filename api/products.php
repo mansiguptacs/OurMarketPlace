@@ -17,6 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 require_once __DIR__ . '/../config/database.php';
 
+function om_api_image_url(string $imageUrl): string
+{
+    $imageUrl = trim($imageUrl);
+    if ($imageUrl === '') {
+        return '';
+    }
+    if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+        return $imageUrl;
+    }
+    return 'https://mansiguptacs.com/ourmarketplace/' . ltrim($imageUrl, '/');
+}
+
 $conn = getDBConnection();
 
 $company_id = isset($_GET['company_id']) ? intval($_GET['company_id']) : 0;
@@ -49,9 +61,7 @@ if ($product_id > 0) {
         $product['price'] = floatval($product['price']);
         $product['avg_rating'] = round(floatval($product['avg_rating']), 1);
         $product['review_count'] = intval($product['review_count']);
-        if (!empty($product['image_url'])) {
-            $product['image_url'] = 'https://mansiguptacs.com/ourmarketplace/' . ltrim($product['image_url'], '/');
-        }
+        $product['image_url'] = om_api_image_url((string) ($product['image_url'] ?? ''));
         echo json_encode(['product' => $product]);
     }
     $conn->close();
@@ -109,9 +119,7 @@ while ($row = $result->fetch_assoc()) {
     $row['price'] = floatval($row['price']);
     $row['avg_rating'] = round(floatval($row['avg_rating']), 1);
     $row['review_count'] = intval($row['review_count']);
-    if (!empty($row['image_url'])) {
-        $row['image_url'] = 'https://mansiguptacs.com/ourmarketplace/' . ltrim($row['image_url'], '/');
-    }
+    $row['image_url'] = om_api_image_url((string) ($row['image_url'] ?? ''));
     $products[] = $row;
 }
 $stmt->close();
