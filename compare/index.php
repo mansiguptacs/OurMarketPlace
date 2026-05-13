@@ -1,27 +1,15 @@
 <?php
 $pageTitle = "Compare Products - OurMarketplace";
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/session.php';
 
-$conn = getDBConnection();
+$selectedIds = compareProductIds();
+$flash = comparePullFlash();
+$products = [];
 
-// Get product IDs from URL (up to 3)
-$ids = $_GET['ids'] ?? '';
-$product_ids = array_filter(array_map('intval', explode(',', $ids)));
-$product_ids = array_slice($product_ids, 0, 3);
-
-// Fetch all products for selection dropdowns
-$all_products = $conn->query("
-    SELECT p.id, p.name, c.name AS company_name 
-    FROM products p 
-    JOIN companies c ON c.id = p.company_id 
-    ORDER BY c.name, p.name
-");
-
-$compare_data = [];
-if (!empty($product_ids)) {
-    $placeholders = implode(',', array_fill(0, count($product_ids), '?'));
-    $types = str_repeat('i', count($product_ids));
-
+if (!empty($selectedIds)) {
+    $conn = getDBConnection();
+    $safeIds = array_map('intval', $selectedIds);
     $sql = "
         SELECT p.*, c.name AS company_name, c.id AS company_id,
                COALESCE(AVG(r.rating), 0) AS avg_rating,
@@ -31,166 +19,144 @@ if (!empty($product_ids)) {
         JOIN companies c ON c.id = p.company_id
         LEFT JOIN reviews r ON r.product_id = p.id
         LEFT JOIN user_visits v ON v.product_id = p.id
-        WHERE p.id IN ($placeholders)
+        WHERE p.id IN (" . implode(',', $safeIds) . ")
         GROUP BY p.id
     ";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param($types, ...$product_ids);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $conn->query($sql);
     while ($row = $result->fetch_assoc()) {
-        $compare_data[] = $row;
+        $products[(int) $row['id']] = $row;
     }
-    $stmt->close();
+    $conn->close();
+
+    $ordered = [];
+    foreach ($safeIds as $id) {
+        if (isset($products[$id])) {
+            $ordered[] = $products[$id];
+        }
+    }
+    $products = $ordered;
 }
+
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<h2 class="mb-4"><i class="fas fa-columns"></i> Compare Products</h2>
-
-<!-- Product Selection Form -->
-<div class="card mb-4">
-    <div class="card-body">
-        <form method="GET" action="">
-            <div class="row g-3 align-items-end">
-                <?php for ($slot = 0; $slot < 3; $slot++): ?>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Product <?php echo $slot + 1; ?></label>
-                    <select name="p<?php echo $slot; ?>" class="form-select">
-                        <option value="">-- Select --</option>
-                        <?php
-                        $all_products->data_seek(0);
-                        while ($p = $all_products->fetch_assoc()):
-                        ?>
-                            <option value="<?php echo $p['id']; ?>" <?php echo (isset($product_ids[$slot]) && $product_ids[$slot] == $p['id']) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($p['company_name'] . ' - ' . $p['name']); ?>
-                            </option>
-                        <?php endwhile; ?>
-                    </select>
-                </div>
-                <?php endfor; ?>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary w-100" onclick="buildCompareUrl(event)">
-                        <i class="fas fa-columns"></i> Compare
-                    </button>
-                </div>
-            </div>
-        </form>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h2 class="mb-1"><i class="fas fa-code-compare"></i> Compare Products</h2>
+        <p class="text-muted mb-0">Add up to 3 products from any storefront and compare them side by side.</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a href="<?php echo baseUrl('/products/index.php'); ?>" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-plus"></i> Add more products
+        </a>
+        <?php if (!empty($products)): ?>
+        <a href="<?php echo baseUrl('/compare/clear.php'); ?>" class="btn btn-outline-danger btn-sm">
+            <i class="fas fa-trash"></i> Clear compare
+        </a>
+        <?php endif; ?>
     </div>
 </div>
 
-<!-- Comparison Table -->
-<?php if (!empty($compare_data)): ?>
-<div class="table-responsive">
-    <table class="table table-bordered text-center">
-        <thead class="table-light">
-            <tr>
-                <th class="text-start" style="width:150px;">Attribute</th>
-                <?php foreach ($compare_data as $product): ?>
-                <th><?php echo htmlspecialchars($product['name']); ?></th>
-                <?php endforeach; ?>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="text-start fw-semibold">Company</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td>
-                    <a href="<?php echo baseUrl('/companies/view.php?id=' . $product['company_id']); ?>" class="text-decoration-none">
-                        <?php echo htmlspecialchars($product['company_name']); ?>
-                    </a>
-                </td>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td class="text-start fw-semibold">Category</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td><span class="badge-category"><?php echo htmlspecialchars($product['category']); ?></span></td>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td class="text-start fw-semibold">Price</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td class="fw-bold text-primary">$<?php echo number_format($product['price'], 2); ?></td>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td class="text-start fw-semibold">Rating</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td>
-                    <div class="stars">
-                        <?php
-                        $avg = round($product['avg_rating'], 1);
-                        for ($i = 1; $i <= 5; $i++):
-                            if ($i <= $avg): ?>
-                                <i class="fas fa-star"></i>
-                            <?php elseif ($i - 0.5 <= $avg): ?>
-                                <i class="fas fa-star-half-alt"></i>
-                            <?php else: ?>
-                                <i class="far fa-star empty"></i>
-                            <?php endif; endfor; ?>
-                    </div>
-                    <small class="text-muted"><?php echo $avg; ?>/5</small>
-                </td>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td class="text-start fw-semibold">Reviews</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td><?php echo $product['review_count']; ?></td>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td class="text-start fw-semibold">Visits</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td><?php echo $product['visit_count']; ?></td>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td class="text-start fw-semibold">Description</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td class="small text-start"><?php echo htmlspecialchars($product['description']); ?></td>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td class="text-start fw-semibold">Actions</td>
-                <?php foreach ($compare_data as $product): ?>
-                <td>
-                    <a href="<?php echo baseUrl('/products/view.php?id=' . $product['id']); ?>" class="btn btn-sm btn-outline-primary">
-                        View Details
-                    </a>
-                </td>
-                <?php endforeach; ?>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<?php elseif (!empty($ids)): ?>
-<div class="alert alert-warning">Please select at least one product to compare.</div>
-<?php else: ?>
-<div class="text-center text-muted mt-4">
-    <i class="fas fa-columns fa-3x mb-3"></i>
-    <p>Select 2 or 3 products above to compare them side by side.</p>
-</div>
+<?php if ($flash): ?>
+    <div class="alert alert-<?php echo htmlspecialchars($flash['type'] === 'danger' ? 'danger' : ($flash['type'] === 'success' ? 'success' : 'info')); ?>">
+        <?php echo htmlspecialchars((string) ($flash['message'] ?? '')); ?>
+    </div>
 <?php endif; ?>
 
-<script>
-function buildCompareUrl(event) {
-    event.preventDefault();
-    const selects = document.querySelectorAll('select[name^="p"]');
-    const ids = [];
-    selects.forEach(function(s) {
-        if (s.value) ids.push(s.value);
-    });
-    if (ids.length < 2) {
-        alert('Please select at least 2 products to compare.');
-        return;
-    }
-    window.location.href = '<?php echo baseUrl('/compare/index.php'); ?>?ids=' + ids.join(',');
-}
-</script>
+<?php if (empty($products)): ?>
+    <div class="alert alert-info">
+        No products selected yet. Open any product and click <strong>Add to compare</strong>.
+    </div>
+<?php else: ?>
+    <div class="row g-3 mb-4">
+        <?php foreach ($products as $product): ?>
+        <div class="col-md-6 col-xl-<?php echo count($products) === 1 ? '12' : (count($products) === 2 ? '6' : '4'); ?>">
+            <div class="card h-100">
+                <?php
+                [$showProductImg, $productImgSrc] = productImageForDisplay($product['image_url'] ?? '');
+                ?>
+                <?php if ($showProductImg): ?>
+                    <img src="<?php echo htmlspecialchars($productImgSrc); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>" style="height:200px;object-fit:cover;">
+                <?php else: ?>
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:200px;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                <?php endif; ?>
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                    <p class="mb-1">
+                        <a href="<?php echo baseUrl('/companies/view.php?id=' . (int) $product['company_id']); ?>" class="text-decoration-none small">
+                            <i class="fas fa-store"></i> <?php echo htmlspecialchars($product['company_name']); ?>
+                        </a>
+                    </p>
+                    <p class="text-muted small mb-2"><?php echo htmlspecialchars(substr($product['description'], 0, 110)); ?><?php echo strlen($product['description']) > 110 ? '...' : ''; ?></p>
+                    <div class="fw-bold text-primary">$<?php echo number_format((float) $product['price'], 2); ?></div>
+                </div>
+                <div class="card-footer bg-white border-0 d-flex gap-2">
+                    <a href="<?php echo baseUrl('/products/view.php?id=' . (int) $product['id']); ?>" class="btn btn-outline-primary btn-sm flex-grow-1">View</a>
+                    <a href="<?php echo baseUrl('/compare/remove.php?product_id=' . (int) $product['id']); ?>" class="btn btn-outline-secondary btn-sm">Remove</a>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
 
-<?php
-$conn->close();
-require_once __DIR__ . '/../includes/footer.php';
-?>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Side-by-Side Comparison</h5>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <tbody>
+                        <tr>
+                            <th style="width: 18rem;">Company</th>
+                            <?php foreach ($products as $product): ?>
+                                <td><?php echo htmlspecialchars($product['company_name']); ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <th>Category</th>
+                            <?php foreach ($products as $product): ?>
+                                <td><?php echo htmlspecialchars($product['category']); ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <?php foreach ($products as $product): ?>
+                                <td class="text-primary fw-bold">$<?php echo number_format((float) $product['price'], 2); ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <th>Average Rating</th>
+                            <?php foreach ($products as $product): ?>
+                                <td><?php echo number_format((float) $product['avg_rating'], 1); ?>/5</td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <th>Review Count</th>
+                            <?php foreach ($products as $product): ?>
+                                <td><?php echo (int) $product['review_count']; ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <th>Visit Count</th>
+                            <?php foreach ($products as $product): ?>
+                                <td><?php echo (int) $product['visit_count']; ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <?php foreach ($products as $product): ?>
+                                <td class="small"><?php echo htmlspecialchars($product['description']); ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <?php if (count($products) < 2): ?>
+                <p class="text-muted mb-0">Add at least one more product to make the side-by-side comparison more meaningful.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

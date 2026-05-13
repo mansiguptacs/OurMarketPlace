@@ -26,6 +26,69 @@ function requireLogin() {
     }
 }
 
+function compareProductIds(): array {
+    $raw = $_SESSION['compare_product_ids'] ?? [];
+    if (!is_array($raw)) {
+        return [];
+    }
+    $ids = [];
+    foreach ($raw as $id) {
+        $id = (int) $id;
+        if ($id > 0) {
+            $ids[$id] = $id;
+        }
+    }
+    return array_values($ids);
+}
+
+function compareHasProduct(int $productId): bool {
+    return in_array($productId, compareProductIds(), true);
+}
+
+function compareCount(): int {
+    return count(compareProductIds());
+}
+
+function compareAddProduct(int $productId, int $limit = 3): string {
+    if ($productId <= 0) {
+        return 'invalid';
+    }
+    $ids = compareProductIds();
+    if (in_array($productId, $ids, true)) {
+        return 'exists';
+    }
+    if (count($ids) >= $limit) {
+        return 'limit';
+    }
+    $ids[] = $productId;
+    $_SESSION['compare_product_ids'] = array_values($ids);
+    return 'added';
+}
+
+function compareRemoveProduct(int $productId): void {
+    $ids = array_values(array_filter(compareProductIds(), function ($id) use ($productId) {
+        return (int) $id !== $productId;
+    }));
+    $_SESSION['compare_product_ids'] = $ids;
+}
+
+function compareClearProducts(): void {
+    unset($_SESSION['compare_product_ids']);
+}
+
+function compareSetFlash(string $message, string $type = 'info'): void {
+    $_SESSION['compare_flash'] = [
+        'message' => $message,
+        'type' => $type,
+    ];
+}
+
+function comparePullFlash(): ?array {
+    $flash = $_SESSION['compare_flash'] ?? null;
+    unset($_SESSION['compare_flash']);
+    return is_array($flash) ? $flash : null;
+}
+
 /**
  * Clear login keys if user_id no longer exists (e.g. DB re-import deleted users).
  * Call after database.php is loaded. Safe if getDBConnection is unavailable.

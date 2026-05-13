@@ -102,9 +102,14 @@ if (!empty($query)) {
                     </div>
                 </div>
                 <div class="card-footer bg-white border-0">
-                    <a href="<?php echo baseUrl('/products/view.php?id=' . $product['id']); ?>" class="btn btn-outline-primary btn-sm w-100">
-                        View Details
-                    </a>
+                    <div class="d-flex gap-2">
+                        <a href="<?php echo baseUrl('/products/view.php?id=' . $product['id']); ?>" class="btn btn-outline-primary btn-sm flex-grow-1">
+                            View Details
+                        </a>
+                        <a href="<?php echo baseUrl('/compare/add.php?product_id=' . $product['id']); ?>" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-code-compare"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

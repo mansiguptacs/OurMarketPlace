@@ -159,9 +159,14 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php if (!empty($product['is_api_product'])): ?>
                         <button class="btn btn-outline-secondary btn-sm w-100" type="button" disabled>API product (view on company site)</button>
                     <?php else: ?>
-                        <a href="<?php echo baseUrl('/products/view.php?id=' . (int) $product['id']); ?>" class="btn btn-outline-primary btn-sm w-100">
-                            View Details
-                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="<?php echo baseUrl('/products/view.php?id=' . (int) $product['id']); ?>" class="btn btn-outline-primary btn-sm flex-grow-1">
+                                View Details
+                            </a>
+                            <a href="<?php echo baseUrl('/compare/add.php?product_id=' . (int) $product['id']); ?>" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-code-compare"></i>
+                            </a>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>

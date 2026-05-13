@@ -112,6 +112,9 @@ require_once __DIR__ . '/../includes/header.php';
                 <i class="fas fa-external-link-alt"></i> Visit Official Store
             </a>
             <?php endif; ?>
+            <a href="<?php echo baseUrl('/compare/add.php?product_id=' . $product_id); ?>" class="btn btn-outline-secondary">
+                <i class="fas fa-code-compare"></i> Add to Compare
+            </a>
             <?php if (isLoggedIn()): ?>
             <a href="<?php echo baseUrl('/wishlist/add.php?product_id=' . $product_id); ?>" class="btn btn-outline-danger">
                 <i class="fas fa-heart"></i> Add to Wishlist

@@ -37,6 +37,11 @@ require_once __DIR__ . '/product_image.php';
                     <a class="nav-link" href="<?php echo baseUrl('/products/search.php'); ?>">Search</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="<?php echo baseUrl('/compare/index.php'); ?>">
+                        Compare<?php if (compareCount() > 0): ?> <span class="badge bg-secondary"><?php echo compareCount(); ?></span><?php endif; ?>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="<?php echo baseUrl('/team.php'); ?>">Team</a>
                 </li>
             </ul>
@@ -58,6 +63,7 @@ require_once __DIR__ . '/product_image.php';
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="<?php echo baseUrl('/dashboard.php'); ?>">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="<?php echo baseUrl('/compare/index.php'); ?>">Compare Products</a></li>
                             <li><a class="dropdown-item" href="<?php echo baseUrl('/wishlist/index.php'); ?>">My Wishlist</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="<?php echo baseUrl('/auth/logout.php'); ?>">Logout</a></li>

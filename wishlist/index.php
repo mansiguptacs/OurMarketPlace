@@ -80,6 +80,9 @@ require_once __DIR__ . '/../includes/header.php';
                 <a href="<?php echo baseUrl('/products/view.php?id=' . $product['id']); ?>" class="btn btn-outline-primary btn-sm flex-grow-1">
                     View
                 </a>
+                <a href="<?php echo baseUrl('/compare/add.php?product_id=' . $product['id']); ?>" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-code-compare"></i>
+                </a>
                 <a href="<?php echo baseUrl('/wishlist/remove.php?product_id=' . $product['id']); ?>" class="btn btn-outline-danger btn-sm">
                     <i class="fas fa-trash"></i>
                 </a>

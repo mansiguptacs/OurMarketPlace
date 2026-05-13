@@ -121,6 +121,11 @@ switch ($method) {
                     <small class="text-muted">
                         <?php echo $avg; ?>/5 &middot; <?php echo $product['review_count']; ?> reviews &middot; <?php echo $product['visit_count']; ?> visits
                     </small>
+                    <div class="mt-2">
+                        <a href="<?php echo baseUrl('/compare/add.php?product_id=' . $product['id']); ?>" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-code-compare"></i> Compare
+                        </a>
+                    </div>
                 </div>
             </div>
             <?php $rank++; endwhile; ?>
