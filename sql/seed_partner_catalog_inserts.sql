@@ -18,8 +18,8 @@ INSERT INTO products (company_id, name, description, price, image_url, category)
 
 -- Sweet Crumb Homemade Cookies (company_id = 3) — fallback rows if live get_products.php is unreachable
 INSERT INTO products (company_id, name, description, price, image_url, category) VALUES
-(3, 'Classic Chocolate Chip (API mirror)', 'Matches cookie-business catalog id 1; use live API when hosting allows outbound HTTP.', 14.99, 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&q=80', 'Cookies'),
-(3, 'Custom Catering Tray (API mirror)', 'Large assorted platters; see company site for allergens and lead time.', 89.99, 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&q=80', 'Catering');
+(3, 'Classic Chocolate Chip (API mirror)', 'Matches the cookie-business signature chocolate chip cookie and uses the same stable product artwork.', 14.99, 'https://www.yukta-padgaonkar.com/CMPE-272-project/cookie-business/product_image.php?slug=classic-chocolate-chip', 'Cookies'),
+(3, 'Custom Catering Tray (API mirror)', 'Assorted catering platter mirroring the cookie-business event tray with updated artwork.', 89.99, 'https://www.yukta-padgaonkar.com/CMPE-272-project/cookie-business/product_image.php?slug=custom-catering-tray', 'Catering');
 
 -- GeekyHub (company_id = 4)
 INSERT INTO products (company_id, name, description, price, image_url, category) VALUES
