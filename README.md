@@ -9,9 +9,9 @@ A unified online marketplace connecting 4 independent web companies, built with 
 | Member | Company | Category | Website |
 |--------|---------|----------|---------|
 | Mansi Gupta | KG Makeup Studio | Makeup & Beauty | [mansiguptacs.com/kgmakeupstudio](https://mansiguptacs.com/kgmakeupstudio/) |
-| Megha | Megha Artisans | Artificial Jewellery | [mgcodes.com](https://mgcodes.com/) |
+| Megha Gangal| Megha Artisans | Artificial Jewellery | [mgcodes.com](https://mgcodes.com/) |
 | Yukta Padgaonkar | Cookie Business | Cookies & Bakery | [yukta-padgaonkar.com](http://yukta-padgaonkar.com/CMPE-272-project/cookie-business/) |
-| Gayathri | GeekyHub | IT & Staffing Services | [geekyhub.me](https://geekyhub.me/) |
+| Gayathri Rukmadhavan | GeekyHub | IT & Staffing Services | [geekyhub.me](http://geekyhub.me/) |
 
 ## Live Demo
 
@@ -47,50 +47,10 @@ A unified online marketplace connecting 4 independent web companies, built with 
 - **Hosting:** InfinityFree shared hosting
 - **Security:** Prepared statements (SQL injection prevention), password_hash/password_verify (bcrypt)
 
-## Setup Instructions
-
-### 1. Database Setup
-1. Create a MySQL database
-2. Run `sql/schema.sql` to create tables and seed data
-3. Update `config/database.php` with your DB credentials and `BASE_URL`
-
-### 2. File Deployment
-Upload all files to your web server's public directory.
-
-### 3. Configuration
-Edit `config/database.php`:
-```php
-define('DB_HOST', 'your_host');
-define('DB_USER', 'your_user');
-define('DB_PASS', 'your_password');
-define('DB_NAME', 'your_database');
-define('BASE_URL', '/yoursubdirectory');  // or '' if at root
-```
-
-## Project Structure
-
-```
-OurMarketplace/
-├── index.php              - Homepage
-├── dashboard.php          - User dashboard
-├── config/database.php    - DB config + BASE_URL
-├── includes/              - Shared components (header, footer, session, tracking)
-├── auth/                  - Register, login, logout
-├── companies/             - Company listing + individual storefronts
-├── products/              - Product listing, detail, search
-├── reviews/               - Review submission
-├── tracking/              - Visit history
-├── rankings/              - Top 5 (marketplace + per-company)
-├── wishlist/              - Wishlist (add, remove, view)
-├── compare/               - Product comparison
-├── assets/                - CSS, JS, images
-└── sql/schema.sql         - Database schema + seed data
-```
-
-## 10 Demo Cases
+## Demo Test Cases
 
 1. Register a new user account
-2. Login with credentials
+2. Login with credentials (SSO)
 3. Browse a company storefront (e.g., KG Makeup Studio)
 4. View a product detail page
 5. Submit a star rating + text review
@@ -99,7 +59,8 @@ OurMarketplace/
 8. View Top 5 marketplace-wide (toggle Most Visited)
 9. Search across marketplace (e.g., "bridal" finds results from Makeup + Jewellery)
 10. User dashboard showing stats, visits breakdown, reviews list
-
-### Bonus Demos
 11. Add products to wishlist from different companies
 12. Compare 2-3 products side by side
+13. Teams Page
+
+Details information to check test cases can be found on google doc: https://docs.google.com/document/d/10GqmC1MvlfgmM86uEI-kkCmC4omgsqoscxgQYWZh-oI/edit?tab=t.kheh5gb14o08
